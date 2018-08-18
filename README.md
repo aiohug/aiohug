@@ -1,8 +1,6 @@
 aiohug: 
 ==============================
 
-[![build status](https://gitlab.ix/online-presence/aiohug/badges/master/build.svg)](https://gitlab.ix/online-presence/aiohug/commits/master) [![coverage report](https://gitlab.ix/online-presence/aiohug/badges/master/coverage.svg)](https://gitlab.ix/online-presence/aiohug/commits/master)
-
 # Tasks:
 
 - Unpack aiohttp request to arguments with annotations
