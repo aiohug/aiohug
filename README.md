@@ -77,16 +77,15 @@ assert await resp.json() == {"count": 5}
 
 
 ```python
-routes = RouteTableDef()
+ws = aiohug.WSHandler()
 
-@routes.ws("hello")  # match message by `type` field
+
+@ws("hello")  # match message by `type` field
 async def hello(name: str, greeting: str="Hi"):
     """ Just send {"type": "hello", "name": "Lucy", "greeting": "Hi"} """
     return {"text", f"{greeting}, {name}"}
 
 
-websocket_handler = aiohug.get_websocket_handler(routes)
-
 app = create_app()
-app.add_routes([web.get('/ws', websocket_handler)])
+app.add_routes([web.get('/ws', ws)])
 ```
