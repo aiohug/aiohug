@@ -89,3 +89,12 @@ async def hello(name: str, greeting: str="Hi"):
 app = create_app()
 app.add_routes([web.get('/ws', ws)])
 ```
+
+- optional response code shortcut
+
+```
+@routes.get("/ping/")
+async def ping():
+  return 201, "pong"
+```
+
