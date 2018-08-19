@@ -73,3 +73,20 @@ assert await resp.json() == {"count": 5}
 
 - don't pass default arguments
 - pretty error message
+- default websocket handler with ping/pong and schemas support
+
+
+```python
+routes = RouteTableDef()
+
+@routes.ws("hello")  # match message by `type` field
+async def hello(name: str, greeting: str="Hi"):
+    """ Just send {"type": "hello", "name": "Lucy", "greeting": "Hi"} """
+    return {"text", f"{greeting}, {name}"}
+
+
+websocket_handler = aiohug.get_websocket_handler(routes)
+
+app = create_app()
+app.add_routes([web.get('/ws', websocket_handler)])
+```
