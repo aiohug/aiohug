@@ -1,0 +1,3 @@
+defaultsettings
+marshmallow
+aiohttp>=3.3

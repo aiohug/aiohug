@@ -1,0 +1,75 @@
+from inspect import iscoroutine, signature, Parameter, isclass, getfullargspec
+from typing import Optional
+from marshmallow import ValidationError, fields, Schema
+from aiohttp import web
+
+from .directives import get_directive
+
+
+def get_default_args(func):
+    sig = signature(func)
+    return {
+        k: v.default
+        for k, v in sig.parameters.items()
+        if v.default is not Parameter.empty
+    }
+
+
+def get_arg(request, arg_name, default=None):
+    if arg_name == "request":
+        return request
+
+    # get args from directives
+    try:
+        return get_directive(arg_name)(request)
+    except KeyError:
+        pass
+
+    # get args from path
+    try:
+        return request.match_info[arg_name]
+    except KeyError:
+        pass
+
+    # get args from query
+    try:
+        return request.rel_url.query[arg_name]
+    except KeyError:
+        pass
+
+    return default
+
+
+def cast_arg(arg, kind: Optional = None):
+    # count: fields.Integer()
+    if isinstance(kind, fields.Field):
+        arg = kind.deserialize(arg)
+    # body: RequestSchema
+    elif isclass(kind) and issubclass(kind, Schema):
+        arg = kind(strict=True, many=False).dump(arg).data
+    # body: RequestSchema()
+    elif isinstance(kind, Schema):
+        kind.strict = True
+        arg = kind.dump(arg).data
+    # count: int
+    elif callable(kind):
+        arg = kind(arg)
+
+    return arg
+
+
+async def get_kwargs(request: web.Request, handler):
+    defaults = get_default_args(handler)
+    arg_spec = getfullargspec(handler)
+    kwargs = {}
+    errors = {}
+    for arg_name in arg_spec.args:
+        arg = get_arg(request, arg_name, defaults.get(arg_name))
+        try:
+            arg = await arg if iscoroutine(arg) else arg
+            arg = cast_arg(arg, arg_spec.annotations.get(arg_name))
+        except ValidationError as e:
+            errors[arg_name] = e.messages
+        if arg is not None:
+            kwargs[arg_name] = arg
+    return kwargs, errors

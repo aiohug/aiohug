@@ -1,2 +1,9 @@
+image: python:36
+
+
+variables:
+  CACHE_NAME: $CI_PIPELINE_ID
+  PACKAGE_NAME: aiohug
+
 test:
   script: cat README.md

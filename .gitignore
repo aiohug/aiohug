@@ -1,0 +1,30 @@
+*.pyc
+*.log
+
+# Settings files
+/local_settings.py
+/settings_local.py
+/settings_local_test.py
+
+# IDE files
+.idea/
+.tmp/
+
+# coverage
+.coverage
+coverage/
+
+# docs
+docs/_build
+
+# virtualenv activation
+/.virtualenv
+/.venv*
+/activate
+.pytest_cache/
+
+# dist
+/dist
+/*.egg-info
+
+.reports
