@@ -16,3 +16,12 @@ tests_python36:
     paths:
       - .coverage
     expire_in: 1d
+
+tests_python37:
+  stage: tests
+  script:
+    - make test_coverage PYTHON_VERSION=3.7
+  artifacts:
+    paths:
+      - .coverage
+    expire_in: 1d
