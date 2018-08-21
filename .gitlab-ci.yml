@@ -1,4 +1,9 @@
-image: python:3.6-stretch
+image: python:3.7-stretch
+
+cache:
+    paths:
+      - .venv
+    untracked: true
 
 stages:
   - tests
@@ -9,20 +14,36 @@ variables:
   PACKAGE_NAME: aiohug
 
 tests_python36:
+  image: python:3.6-stretch
   stage: tests
   script:
-    - make test_coverage PYTHON_VERSION=3.6
-  artifacts:
-    paths:
-      - .coverage
-    expire_in: 1d
+    - make ci_test
 
 tests_python37:
   image: python:3.7-stretch
   stage: tests
   script:
-    - make test_coverage PYTHON_VERSION=3.7
-  artifacts:
-    paths:
-      - .coverage
-    expire_in: 1d
+    - make ci_test
+
+.pypi: &upload_base
+  stage: upload
+  script:
+    - pip install twine
+    - python setup.py sdist
+    - twine upload dist/*
+  when: on_success
+  environment:
+    name: pypi.org
+    url: https://pypi.org/$PACKAGE_NAME
+
+upload:development:
+  <<: *upload_base
+  variables:
+    DEV_VERSION: $CI_PIPELINE_ID
+  except:
+    - tags
+
+upload:production:
+  <<: *upload_base
+  only:
+    - tags
