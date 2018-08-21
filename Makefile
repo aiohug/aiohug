@@ -17,6 +17,7 @@ test_coverage: venv
 	$(VIRTUAL_ENV)/bin/py.test --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov aiohug
 
 venv_init:
+	pip install virtualenv
 	if [ ! -d $(VIRTUAL_ENV) ]; then \
 		virtualenv -p python$(PYTHON_VERSION) --prompt="($(PROJECT)) " $(VIRTUAL_ENV); \
 	fi
