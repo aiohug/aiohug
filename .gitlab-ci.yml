@@ -1,9 +1,18 @@
 image: python:36
 
+stages:
+  - tests
+  - upload
 
 variables:
   CACHE_NAME: $CI_PIPELINE_ID
   PACKAGE_NAME: aiohug
 
-test:
-  script: cat README.md
+tests_python36:
+  stage: tests
+  script:
+    - make test_coverage PYTHON_VERSION=3.6
+  artifacts:
+    paths:
+      - .coverage
+    expire_in: 1d
