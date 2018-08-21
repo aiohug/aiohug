@@ -5,7 +5,7 @@ from inspect import getfullargspec
 from aiohttp import web
 from apispec import APISpec
 from apispec.ext.marshmallow.swagger import field2parameter
-from defaultsettings import DefaultSettings
+from yzconfig import YzConfig
 from marshmallow import fields, Schema
 from marshmallow.schema import SchemaMeta
 
@@ -16,7 +16,7 @@ from .decorators import response, spec
 logger = logging.getLogger(__name__)
 
 
-class Settings(DefaultSettings):
+class Settings(YzConfig):
     HOST = "localhost:9001"
     SCHEMES = ["http"]
     VERSION = "0.1"

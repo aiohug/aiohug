@@ -23,7 +23,6 @@ venv_init:
 	fi
 
 venv:  venv_init
-	cp $(PIP_CONF) $(VIRTUAL_ENV)/
 	$(VIRTUAL_ENV)/bin/pip install -r $(REQUIREMENTS_TEST)
 
 
