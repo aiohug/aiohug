@@ -50,8 +50,8 @@ Arguments from path and query
 
 
    @routes.get("/hello/{name}/")
-       async def hello(name: fields.String(), greeting: fields.String() = "Hello"):
-           return {"msg": f"{greeting}, {name}"}
+   async def hello(name: fields.String(), greeting: fields.String() = "Hello"):
+       return {"msg": f"{greeting}, {name}"}
 
 Body with schema
 ----------------
@@ -101,7 +101,7 @@ TODO:
 
 -  optional response code shortcut
 
-::
+.. code :: python 
 
    @routes.get("/ping/")
    async def ping():
