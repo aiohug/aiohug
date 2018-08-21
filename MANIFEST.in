@@ -1,0 +1,3 @@
+include Makefile README.md README.txt project.ini requirements.txt
+recursive-include aiohug/jinja2 *
+recursive-include aiohug/static *
