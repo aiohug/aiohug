@@ -1,2 +1,2 @@
 test:
-  script: less README.md
+  script: cat README.md
