@@ -78,11 +78,27 @@ Body with schema
 
    assert await resp.json() == {"count": 5}
 
+Another shortcuts
+-----------------
+
+.. code:: python 
+
+   @routes.post("/ping/")
+   async def ping():
+     return 201, "pong"
+
+
+Why aiohug?
+===========
+
+It's just hug_ API implementation for aiohttp 
+
+.. _hug: https://github.com/timothycrosley/hug
+
 TODO:
 =====
 
 -  don’t pass default arguments
--  pretty error message
 -  default websocket handler with ping/pong and schemas support
 
 .. code:: python
@@ -98,11 +114,3 @@ TODO:
 
    app = create_app()
    app.add_routes([web.get('/ws', ws)])
-
--  optional response code shortcut
-
-.. code :: python 
-
-   @routes.get("/ping/")
-   async def ping():
-     return 201, "pong"
