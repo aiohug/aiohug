@@ -2,8 +2,8 @@ import os
 import yaml
 from aiohttp import web
 
-import swagger
 from aiohug import RouteTableDef
+from aiohug import swagger
 
 routes = RouteTableDef()
 
