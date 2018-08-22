@@ -2,19 +2,19 @@ import os
 import yaml
 from aiohttp import web
 
-import swagger
 from aiohug import RouteTableDef
+from aiohug import swagger
 
 routes = RouteTableDef()
 
 
-@swagger.exclude()
+@swagger.spec(exclude=True)
 @routes.get("/swagger.json")
 async def swagger_json(request):
     return swagger.generate_swagger(request.app)
 
 
-@swagger.exclude()
+@swagger.spec(exclude=True)
 @routes.get("/swagger.yaml")
 async def swagger_yaml(request):
     return web.Response(
@@ -22,7 +22,7 @@ async def swagger_yaml(request):
     )
 
 
-@swagger.exclude()
+@swagger.spec(exclude=True)
 @routes.get("/swagger/", name="swagger")
 async def root():
     template_path = os.path.join(
