@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 converter = OpenAPIConverter("2.1")
 
-
 DEFAULT_HOST = "localhost:8080"
 DEFAULT_SCHEMES = ["http"]
 DEFAULT_VERSION = None
@@ -28,6 +27,9 @@ DEFAULT_USE_DEFAULT_RESPONSE = True
 DEFAULT_DESCRIPTION = None
 DEFAULT_CONTACT_EMAIL = None
 
+PARAMETER_IN_PATH = "path"
+PARAMETER_IN_QUERY = "query"
+
 
 def get_summary(doc):
     if doc is not None:
@@ -35,7 +37,7 @@ def get_summary(doc):
 
 
 def where_is_parameter(name, url):
-    return "path" if "{%s}" % name in url else "query"
+    return PARAMETER_IN_PATH if "{%s}" % name in url else PARAMETER_IN_QUERY
 
 
 def get_parameters(url, handler, spec):
