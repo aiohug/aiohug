@@ -34,7 +34,18 @@ def test_response():
     assert handler.swagger_spec["responses"][code]["description"] == description
 
 
-def test_response_all():
+def test_response_code():
+    code = 201
+
+    @swagger.response(code)
+    def handler():
+        pass
+
+    assert code in handler.swagger_spec["responses"]
+    assert handler.swagger_spec["responses"][code] == {}
+
+
+def test_spec():
     attrs = {"private": True, "exclude": True, "deprecated": True, "tags": ["test"]}
 
     @swagger.spec(**attrs)

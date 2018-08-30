@@ -41,17 +41,20 @@ def get_arg(request, arg_name, default=None):
 
 
 def cast_arg(arg, kind: Optional = None):
-    # count: fields.Integer()
+    # fields.Integer()
     if isinstance(kind, fields.Field):
         arg = kind.deserialize(arg)
-    # body: RequestSchema
+    # arg: fields.Integer
+    elif isclass(kind) and issubclass(kind, fields.Field):
+        arg = kind().deserialize(arg)
+    # arg: RequestSchema
     elif isclass(kind) and issubclass(kind, Schema):
         arg = kind(strict=True, many=False).dump(arg).data
-    # body: RequestSchema()
+    # RequestSchema()
     elif isinstance(kind, Schema):
         kind.strict = True
         arg = kind.dump(arg).data
-    # count: int
+    # int, string
     elif callable(kind):
         arg = kind(arg)
 

@@ -17,4 +17,4 @@ exclude_lines =
     if 0:
     if __name__ == .__main__.:
 
-fail_under = 20
+fail_under = 80

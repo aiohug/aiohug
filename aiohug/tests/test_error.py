@@ -22,7 +22,10 @@ async def test_not_valid_field(test_client):
     client = await test_client(app)
     resp = await client.get(f"/number/notanumber/")
     assert resp.status == 409
-    assert await resp.json() == {'data': {'number': ['Not a valid integer.']}, 'status': 'error'}
+    assert await resp.json() == {
+        "data": {"number": ["Not a valid integer."]},
+        "status": "error",
+    }
 
 
 async def test_not_valid_schema(test_client):
@@ -41,4 +44,7 @@ async def test_not_valid_schema(test_client):
     client = await test_client(app)
     resp = await client.get("/", json={"a": "5", "b": "c"})
     assert resp.status == 409
-    assert await resp.json() == {'data': {'body': {'b': ['Not a valid integer.']}}, 'status': 'error'}
+    assert await resp.json() == {
+        "data": {"body": {"b": ["Not a valid integer."]}},
+        "status": "error",
+    }
