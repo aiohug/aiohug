@@ -15,7 +15,7 @@ def get_default_args(func):
     }
 
 
-def get_arg(request, arg_name, default=None):
+def get_arg(request, arg_name, defaults):
     if arg_name == "request":
         return request
 
@@ -37,7 +37,10 @@ def get_arg(request, arg_name, default=None):
     except KeyError:
         pass
 
-    return default
+    try:
+        return defaults[arg_name]
+    except KeyError:
+        raise fields.ValidationError("Required argument")
 
 
 def cast_arg(arg, kind: Optional = None):
@@ -67,12 +70,13 @@ async def get_kwargs(request: web.Request, handler):
     kwargs = {}
     errors = {}
     for arg_name in arg_spec.args:
-        arg = get_arg(request, arg_name, defaults.get(arg_name))
         try:
+            arg = get_arg(request, arg_name, defaults)
             arg = await arg if iscoroutine(arg) else arg
             arg = cast_arg(arg, arg_spec.annotations.get(arg_name))
         except ValidationError as e:
             errors[arg_name] = e.messages
-        if arg is not None:
-            kwargs[arg_name] = arg
+        else:
+            if arg is not None:
+                kwargs[arg_name] = arg
     return kwargs, errors
