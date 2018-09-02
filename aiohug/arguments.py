@@ -15,7 +15,7 @@ def get_default_args(func):
     }
 
 
-def get_arg(request, arg_name, default=None):
+def get_arg(request, arg_name, defaults):
     if arg_name == "request":
         return request
 
@@ -37,21 +37,27 @@ def get_arg(request, arg_name, default=None):
     except KeyError:
         pass
 
-    return default
+    try:
+        return defaults[arg_name]
+    except KeyError:
+        raise fields.ValidationError("Required argument")
 
 
 def cast_arg(arg, kind: Optional = None):
-    # count: fields.Integer()
+    # fields.Integer()
     if isinstance(kind, fields.Field):
         arg = kind.deserialize(arg)
-    # body: RequestSchema
+    # arg: fields.Integer
+    elif isclass(kind) and issubclass(kind, fields.Field):
+        arg = kind().deserialize(arg)
+    # arg: RequestSchema
     elif isclass(kind) and issubclass(kind, Schema):
         arg = kind(strict=True, many=False).dump(arg).data
-    # body: RequestSchema()
+    # RequestSchema()
     elif isinstance(kind, Schema):
         kind.strict = True
         arg = kind.dump(arg).data
-    # count: int
+    # int, string
     elif callable(kind):
         arg = kind(arg)
 
@@ -64,12 +70,13 @@ async def get_kwargs(request: web.Request, handler):
     kwargs = {}
     errors = {}
     for arg_name in arg_spec.args:
-        arg = get_arg(request, arg_name, defaults.get(arg_name))
         try:
+            arg = get_arg(request, arg_name, defaults)
             arg = await arg if iscoroutine(arg) else arg
             arg = cast_arg(arg, arg_spec.annotations.get(arg_name))
         except ValidationError as e:
             errors[arg_name] = e.messages
-        if arg is not None:
-            kwargs[arg_name] = arg
+        else:
+            if arg is not None:
+                kwargs[arg_name] = arg
     return kwargs, errors

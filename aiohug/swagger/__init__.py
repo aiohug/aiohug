@@ -4,32 +4,31 @@ from inspect import getfullargspec
 
 from aiohttp import web
 from apispec import APISpec
-from apispec.ext.marshmallow.swagger import field2parameter
-from yzconfig import YzConfig
+from apispec.ext.marshmallow import OpenAPIConverter
+
 from marshmallow import fields, Schema
 from marshmallow.schema import SchemaMeta
 
-from arguments import get_default_args
-from directives import get_available_directives
+from aiohug.arguments import get_default_args
+from aiohug.directives import get_available_directives
 from .decorators import response, spec
 
 logger = logging.getLogger(__name__)
 
+converter = OpenAPIConverter("2.1")
 
-class Settings(YzConfig):
-    HOST = "localhost:9001"
-    SCHEMES = ["http"]
-    VERSION = "0.1"
-    TITLE = "Swagger Application"
-    DEFINITIONS_PATH = None
-    TESTING_MODE = False
-    USE_DEFAULT_RESPONSE = True
-    DESCRIPTION = ""
-    CONTACT_EMAIL = ""
+DEFAULT_HOST = "localhost:8080"
+DEFAULT_SCHEMES = ["http"]
+DEFAULT_VERSION = None
+DEFAULT_TITLE = "Swagger Application"
+DEFAULT_DEFINITIONS_PATH = None
+DEFAULT_TESTING_MODE = False
+DEFAULT_USE_DEFAULT_RESPONSE = True
+DEFAULT_DESCRIPTION = None
+DEFAULT_CONTACT_EMAIL = None
 
-
-settings = Settings("SWAGGER_")
-del Settings
+PARAMETER_IN_PATH = "path"
+PARAMETER_IN_QUERY = "query"
 
 
 def get_summary(doc):
@@ -38,7 +37,7 @@ def get_summary(doc):
 
 
 def where_is_parameter(name, url):
-    return "path" if "{%s}" % name in url else "query"
+    return PARAMETER_IN_PATH if "{%s}" % name in url else PARAMETER_IN_QUERY
 
 
 def get_parameters(url, handler, spec):
@@ -54,7 +53,7 @@ def get_parameters(url, handler, spec):
             parameter_place = where_is_parameter(name, url)
             kind.metadata = {"location": where_is_parameter(name, url)}
             kind.required = name not in defaults
-            parameter = field2parameter(
+            parameter = converter.field2parameter(
                 kind, name=name, default_in=parameter_place, use_refs=False
             )
             if name in defaults:
@@ -83,20 +82,25 @@ def get_parameters(url, handler, spec):
     return parameters
 
 
-def generate_swagger(app: web.Application):
+def generate_swagger(
+    app: web.Application,
+    title=DEFAULT_TITLE,
+    version=DEFAULT_VERSION,
+    host=DEFAULT_HOST,
+    schemes=DEFAULT_SCHEMES,
+    definitions_path=DEFAULT_DEFINITIONS_PATH,
+    **options
+):
+    if host is not None:
+        options["host"] = host
+    if schemes is not None:
+        options["schemes"] = schemes
+
     spec = APISpec(
-        title=settings.TITLE,
-        info={
-            "description": settings.DESCRIPTION,
-            "contact": {"email": settings.CONTACT_EMAIL},
-        },
-        version=settings.VERSION,
-        plugins=("apispec.ext.marshmallow",),
-        schemes=settings.SCHEMES,
-        host=settings.HOST,
+        title=title, version=version, plugins=("apispec.ext.marshmallow",), **options
     )
-    if settings.DEFINITIONS_PATH is not None:
-        definitions = importlib.import_module(settings.DEFINITIONS_PATH)
+    if definitions_path is not None:
+        definitions = importlib.import_module(definitions_path)
 
         for name, schema in definitions.__dict__.items():  # type: str, Schema
             if name.endswith("Schema") and len(name) > len("Schema"):

@@ -1,0 +1,20 @@
+[run]
+branch = True
+omit =
+    aiohug/tests/*
+    aiohug/*/tests/*
+
+[report]
+skip_covered = True
+exclude_lines =
+    pragma: no cover
+    if global_settings.STAGING_MODE:
+    def __repr__
+    if self.debug:
+    if settings.DEBUG
+    raise AssertionError
+    raise NotImplementedError
+    if 0:
+    if __name__ == .__main__.:
+
+fail_under = 80

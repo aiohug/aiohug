@@ -8,7 +8,10 @@ from aiohug.shortcuts import process_response
 
 def test_plaintext():
     text = "pong"
-    assert process_response(text) == web.Response(text=text)
+    resp = process_response(text)
+    expected = web.Response(text=text)
+    assert resp.text == expected.text
+    assert resp.content_type == expected.content_type
 
 
 @pytest.mark.parametrize("body", ({"message": "hello"}, [{"message": "hello"}]))
