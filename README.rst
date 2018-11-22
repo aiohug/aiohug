@@ -8,8 +8,8 @@ aiohug
 .. |coverage report| image:: https://gitlab.com/nonamenix/aiohug/badges/master/coverage.svg
    :target: https://gitlab.com/nonamenix/aiohug/commits/master
 
-Tasks:
-======
+Goals:
+=====
 
 -  Unpack aiohttp request to arguments with annotations
 -  Validate handlers arguments
@@ -86,6 +86,11 @@ Another shortcuts
    @routes.post("/ping/")
    async def ping():
      return 201, "pong"
+
+Swagger
+-------
+
+Use `aiohug_swagger` package.
 
 
 Why aiohug?
