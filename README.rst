@@ -90,7 +90,9 @@ Another shortcuts
 Swagger
 -------
 
-Use `aiohug_swagger` package.
+Use aiohug_swagger_ package.
+
+.. _aiohug_swagger: https://github.com/nonamenix/aiohug_swagger
 
 
 Why aiohug?
