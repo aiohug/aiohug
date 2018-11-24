@@ -9,8 +9,10 @@ PIP_CONF = pip.conf
 PYPI = pypi
 TEST_SETTINGS = settings_test
 
-ci_test:
+pip_install:
 	pip install -r requirements-test.txt
+
+ci_test:
 	pytest --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
 
 test: venv
