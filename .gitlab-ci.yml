@@ -66,8 +66,7 @@ upload:development:
   <<: *upload_base
   variables:
     DEV_VERSION: $CI_PIPELINE_ID
-  except:
-    - tags
+  when: manual
 
 upload:production:
   <<: *upload_base
