@@ -154,3 +154,24 @@ async def test_cast_error(test_client):
         "data": {"number": ["Not a valid URL."]},
         "status": "error",
     }
+
+
+async def test_variable_not_provided_with_base_types(test_client):
+    routes = RouteTableDef()
+
+    @routes.get("/")
+    async def return_number(number: int):
+        return {"number": number}
+
+    app = create_app()
+    app.add_routes(routes)
+
+    client = await test_client(app)
+    resp = await client.get('/')
+    assert resp.status == 409
+    assert await resp.json() == {
+        "data": {"number": ["Required argument"]},
+        "status": "error",
+    }
+
+

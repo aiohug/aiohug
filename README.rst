@@ -8,8 +8,8 @@ aiohug
 .. |coverage report| image:: https://gitlab.com/nonamenix/aiohug/badges/master/coverage.svg
    :target: https://gitlab.com/nonamenix/aiohug/commits/master
 
-Tasks:
-======
+Goals:
+=====
 
 -  Unpack aiohttp request to arguments with annotations
 -  Validate handlers arguments
@@ -87,6 +87,13 @@ Another shortcuts
    async def ping():
      return 201, "pong"
 
+Swagger
+-------
+
+Use aiohug_swagger_ package.
+
+.. _aiohug_swagger: https://github.com/nonamenix/aiohug_swagger
+
 
 Why aiohug?
 ===========
@@ -99,18 +106,3 @@ TODO:
 =====
 
 -  don’t pass default arguments
--  default websocket handler with ping/pong and schemas support
-
-.. code:: python
-
-   ws = aiohug.WSHandler()
-
-
-   @ws("hello")  # match message by `type` field
-   async def hello(name: str, greeting: str="Hi"):
-       """ Just send {"type": "hello", "name": "Lucy", "greeting": "Hi"} """
-       return {"text", f"{greeting}, {name}"}
-
-
-   app = create_app()
-   app.add_routes([web.get('/ws', ws)])
