@@ -28,7 +28,7 @@ base_test_python_3.7:
   script:
     - make pip_install
     - make ci_test
-  artefacts:
+  artifacts:
     paths:
       - .reports
 
