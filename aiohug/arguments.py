@@ -77,6 +77,6 @@ async def get_kwargs(request: web.Request, handler):
         except ValidationError as e:
             errors[arg_name] = e.messages
         else:
-            if arg is not None:
+            if arg is not None:  # pragma: no cover
                 kwargs[arg_name] = arg
     return kwargs, errors

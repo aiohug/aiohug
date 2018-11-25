@@ -9,7 +9,7 @@ def create_app():
     return app
 
 
-async def test_not_valid_field(test_client):
+async def test_not_valid_field(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/number/{number}/")
@@ -19,7 +19,7 @@ async def test_not_valid_field(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get(f"/number/notanumber/")
     assert resp.status == 409
     assert await resp.json() == {
@@ -28,7 +28,7 @@ async def test_not_valid_field(test_client):
     }
 
 
-async def test_not_valid_schema(test_client):
+async def test_not_valid_schema(aiohttp_client):
     routes = RouteTableDef()
 
     class RequestSchema(Schema):
@@ -41,7 +41,7 @@ async def test_not_valid_schema(test_client):
 
     app = create_app()
     app.add_routes(routes)
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get("/", json={"a": "5", "b": "c"})
     assert resp.status == 409
     assert await resp.json() == {

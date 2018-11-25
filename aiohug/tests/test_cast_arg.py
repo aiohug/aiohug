@@ -4,7 +4,7 @@ from marshmallow import fields, Schema
 from aiohug.arguments import cast_arg
 
 
-class TestSchema(Schema):
+class SchemaTest(Schema):
     arg = fields.Integer()
 
 
@@ -13,8 +13,8 @@ class TestSchema(Schema):
     (
         ("5", fields.Integer, 5),
         ("5", fields.Integer(), 5),
-        ({"arg": "5"}, TestSchema, {"arg": 5}),
-        ({"arg": "5"}, TestSchema(), {"arg": 5}),
+        ({"arg": "5"}, SchemaTest, {"arg": 5}),
+        ({"arg": "5"}, SchemaTest(), {"arg": 5}),
         ("5", int, 5),
     ),
 )
