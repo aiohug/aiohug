@@ -173,5 +173,3 @@ async def test_variable_not_provided_with_base_types(test_client):
         "data": {"number": ["Required argument"]},
         "status": "error",
     }
-
-
