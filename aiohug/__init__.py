@@ -2,7 +2,7 @@ from aiohttp import web
 
 try:
     from aiohttp.web_routedef import RouteDef
-except ImportError:
+except ImportError:  # pragma: no cover
     from aiohttp.web_urldispatcher import RouteDef
 
 from .arguments import get_kwargs
