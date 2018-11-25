@@ -8,7 +8,7 @@ def create_app():
     return app
 
 
-async def test_ping(test_client):
+async def test_ping(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/ping/")
@@ -18,14 +18,14 @@ async def test_ping(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get("/ping/")
     assert resp.status == 200
     text = await resp.text()
     assert "pong" in text
 
 
-async def test_ping_with_request(test_client):
+async def test_ping_with_request(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/ping/")
@@ -35,14 +35,14 @@ async def test_ping_with_request(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get("/ping/")
     assert resp.status == 200
     text = await resp.text()
     assert "pong" in text
 
 
-async def test_hello(test_client):
+async def test_hello(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/hello/{name}/")
@@ -52,13 +52,13 @@ async def test_hello(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get("/hello/Lucy/")
     assert resp.status == 200
     assert {"msg": "Hello, Lucy"} == await resp.json()
 
 
-async def test_json_body(test_client):
+async def test_json_body(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/")
@@ -68,14 +68,14 @@ async def test_json_body(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     payload = {"msg": "Hello, Lucy"}
     resp = await client.get("/", json=payload)
     assert resp.status == 200
     assert await resp.json() == payload
 
 
-async def test_json_body_with_schema_class(test_client):
+async def test_json_body_with_schema_class(aiohttp_client):
     routes = RouteTableDef()
 
     class RequestSchema(Schema):
@@ -88,13 +88,13 @@ async def test_json_body_with_schema_class(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get("/", json={"count": "5"})
     assert resp.status == 200
     assert await resp.json() == {"count": 5}
 
 
-async def test_json_body_with_schema_instance(test_client):
+async def test_json_body_with_schema_instance(aiohttp_client):
     routes = RouteTableDef()
 
     class RequestSchema(Schema):
@@ -107,7 +107,7 @@ async def test_json_body_with_schema_instance(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get("/", json={"count": "5"})
     assert resp.status == 200
     assert await resp.json() == {"count": 5}
@@ -119,7 +119,7 @@ async def test_json_body_with_schema_instance(test_client):
 #     # todo: send no json mime type
 
 
-async def test_cast(test_client):
+async def test_cast(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/number/{number}/")
@@ -129,14 +129,14 @@ async def test_cast(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     number = 5
     resp = await client.get(f"/number/{number}/")
     assert resp.status == 200
     assert await resp.json() == {"number": number}
 
 
-async def test_cast_error(test_client):
+async def test_cast_error(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/number/{number}/")
@@ -146,7 +146,7 @@ async def test_cast_error(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     number = 5
     resp = await client.get(f"/number/{number}/")
     assert resp.status == 409
@@ -156,7 +156,7 @@ async def test_cast_error(test_client):
     }
 
 
-async def test_variable_not_provided_with_base_types(test_client):
+async def test_variable_not_provided_with_base_types(aiohttp_client):
     routes = RouteTableDef()
 
     @routes.get("/")
@@ -166,7 +166,7 @@ async def test_variable_not_provided_with_base_types(test_client):
     app = create_app()
     app.add_routes(routes)
 
-    client = await test_client(app)
+    client = await aiohttp_client(app)
     resp = await client.get('/')
     assert resp.status == 409
     assert await resp.json() == {
