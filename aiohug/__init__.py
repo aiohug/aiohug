@@ -1,5 +1,9 @@
 from aiohttp import web
-from aiohttp.web_routedef import RouteDef
+
+try:
+    from aiohttp.web_routedef import RouteDef
+except ImportError:
+    from aiohttp.web_urldispatcher import RouteDef
 
 from .arguments import get_kwargs
 from . import shortcuts
