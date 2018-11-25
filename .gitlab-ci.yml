@@ -45,12 +45,6 @@ base_test_python_3.6_aiohttp_3.4.4:
     - pip install aiohttp==3.4.4
     - make ci_test
 
-linters:
-  stage: additional_tests
-  script:
-    - make pip_install
-    - make lint_it
-
 .pypi: &upload_base
   stage: upload
   script:
