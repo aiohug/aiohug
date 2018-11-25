@@ -1,12 +1,14 @@
 aiohug
 ======
 
-|pipeline status| |coverage report|
+|version| |pipeline status| |coverage report|
 
 .. |pipeline status| image:: https://gitlab.com/nonamenix/aiohug/badges/master/pipeline.svg
    :target: https://gitlab.com/nonamenix/aiohug/commits/master
 .. |coverage report| image:: https://gitlab.com/nonamenix/aiohug/badges/master/coverage.svg
    :target: https://gitlab.com/nonamenix/aiohug/commits/master
+.. |version| image:: https://badge.fury.io/py/aiohug.svg
+   :target: https://badge.fury.io/py/aiohug
 
 Goals:
 =====
