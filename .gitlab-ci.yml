@@ -31,6 +31,7 @@ base_test_python_3.7:
   artifacts:
     paths:
       - .reports
+    expire_in: 1 week
 
 base_test_python_3.6_aiohttp_3.1:
   image: python:3.6-stretch
