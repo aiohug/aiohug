@@ -33,3 +33,8 @@ def test_status_and_body(body):
     )
     assert response.status == expected_response.status
     assert response.body == expected_response.body
+
+
+@pytest.mark.parametrize("body", [5, 5.0, web.Response(text="not shorted")])
+def test_not_short_response(body):
+    assert process_response(body) == body
