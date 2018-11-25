@@ -13,16 +13,34 @@ variables:
   CACHE_NAME: $CI_PIPELINE_ID
   PACKAGE_NAME: aiohug
 
+tests_aiohttp_3.1:
+  image: python:3.6-stretch
+  stage: tests
+  script:
+    - make pip_install
+    - pip install aiohttp==3.1
+    - make ci_test
+
+tests_aiohttp_3.4.4:
+  image: python:3.6-stretch
+  stage: tests
+  script:
+    - make pip_install
+    - pip install aiohttp==3.4.4
+    - make ci_test
+
 tests_python36:
   image: python:3.6-stretch
   stage: tests
   script:
+    - make pip_install
     - make ci_test
 
 tests_python37:
   image: python:3.7-stretch
   stage: tests
   script:
+    - make pip_install
     - make ci_test
 
 .pypi: &upload_base
@@ -40,8 +58,7 @@ upload:development:
   <<: *upload_base
   variables:
     DEV_VERSION: $CI_PIPELINE_ID
-  except:
-    - tags
+  when: manual
 
 upload:production:
   <<: *upload_base
