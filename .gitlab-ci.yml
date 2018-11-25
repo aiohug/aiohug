@@ -6,42 +6,50 @@ cache:
     untracked: true
 
 stages:
-  - tests
+  - base_test
+  - additional_tests
   - upload
 
 variables:
   CACHE_NAME: $CI_PIPELINE_ID
   PACKAGE_NAME: aiohug
 
-tests_aiohttp_3.1:
+
+base_test_python_3.6:
   image: python:3.6-stretch
-  stage: tests
+  stage: base_test
+  script:
+    - make pip_install
+    - make ci_test
+
+base_test_python_3.7:
+  image: python:3.7-stretch
+  stage: base_test
+  script:
+    - make pip_install
+    - make ci_test
+
+base_test_python_3.6_aiohttp_3.1:
+  image: python:3.6-stretch
+  stage: additional_tests
   script:
     - make pip_install
     - pip install aiohttp==3.1
     - make ci_test
 
-tests_aiohttp_3.4.4:
+base_test_python_3.6_aiohttp_3.4.4:
   image: python:3.6-stretch
-  stage: tests
+  stage: additional_tests
   script:
     - make pip_install
     - pip install aiohttp==3.4.4
     - make ci_test
 
-tests_python36:
-  image: python:3.6-stretch
-  stage: tests
+linters:
+  stage: additional_tests
   script:
-    - make pip_install
-    - make ci_test
-
-tests_python37:
-  image: python:3.7-stretch
-  stage: tests
-  script:
-    - make pip_install
-    - make ci_test
+    - make_pip_install
+    - make lint_it
 
 .pypi: &upload_base
   stage: upload

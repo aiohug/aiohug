@@ -1,8 +1,5 @@
 import asyncio
 
-from aiohttp import web
-import pytest
-
 from aiohug.arguments import get_arg
 from unittest.mock import MagicMock
 

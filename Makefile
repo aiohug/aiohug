@@ -15,6 +15,9 @@ pip_install:
 ci_test:
 	pytest --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
 
+lint_it:
+	vulture --exclude=tests $(PROJECT)
+
 test: venv
 	$(VIRTUAL_ENV)/bin/py.test
 
