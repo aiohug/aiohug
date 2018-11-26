@@ -13,15 +13,15 @@ aiohug
 Goals:
 ======
 
--  Unpack aiohttp request to arguments with annotations
+-  Unpack aiohttp (>=3.1) request to arguments with annotations
 -  Validate handlers arguments
 -  Generate swagger specification
 
 Examples
 ========
 
-Run ping pong application
--------------------------
+Arguments from path and query
+-----------------------------
 
 .. code:: python
 
@@ -31,9 +31,9 @@ Run ping pong application
    routes = RouteTableDef()
 
 
-   @routes.get("/ping/")
-   async def ping():
-     return "pong"
+   @routes.get("/hello/{name}/")
+   async def hello(name: fields.String(), greeting: fields.String() = "Hello"):
+       return {"msg": f"{greeting}, {name}"}
 
 
    app = web.Application()
@@ -43,17 +43,8 @@ Run ping pong application
    if __name__ == "__main__":
        web.run_app(app)
 
-There is no more ``request`` object in handler.
-
-Arguments from path and query
------------------------------
-
-.. code:: python
-
-
-   @routes.get("/hello/{name}/")
-   async def hello(name: fields.String(), greeting: fields.String() = "Hello"):
-       return {"msg": f"{greeting}, {name}"}
+There is no more ``request`` object in handler only required arguments.
+   
 
 Body with schema
 ----------------
