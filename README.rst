@@ -11,7 +11,7 @@ aiohug
    :target: https://badge.fury.io/py/aiohug
 
 Goals:
-=====
+======
 
 -  Unpack aiohttp request to arguments with annotations
 -  Validate handlers arguments
