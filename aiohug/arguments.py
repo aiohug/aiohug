@@ -52,11 +52,11 @@ def cast_arg(arg, kind: Optional = None):
         arg = kind().deserialize(arg)
     # arg: RequestSchema
     elif isclass(kind) and issubclass(kind, Schema):
-        arg = kind(strict=True, many=False).dump(arg).data
+        arg = kind(many=False).dump(arg)  # $strict=True, .marshmallow 3.0 compatibility
     # RequestSchema()
     elif isinstance(kind, Schema):
         kind.strict = True
-        arg = kind.dump(arg).data
+        arg = kind.dump(arg)  # .data marshmallow 3.0 compatibility
     # int, string
     elif callable(kind):
         arg = kind(arg)
