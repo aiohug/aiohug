@@ -27,10 +27,16 @@ def _handle(handler):
 
 
 class RouteTableDef(web.RouteTableDef):
+    def __init__(self, prefix="") -> None:
+        super().__init__()
+        self.path_prefix = "/" + prefix.strip('/')
+
     def route(self, method, path, **kwargs):
         def inner(handler):
             handler = _handle(handler)
-            self._items.append(RouteDef(method, path, handler, kwargs))
+            self._items.append(
+                RouteDef(method, f"{self.path_prefix}{path}", handler, kwargs)
+            )
             return handler
 
         return inner
