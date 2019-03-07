@@ -29,7 +29,8 @@ def _handle(handler):
 class RouteTableDef(web.RouteTableDef):
     def __init__(self, prefix="") -> None:
         super().__init__()
-        self.path_prefix = "/" + prefix.strip('/')
+        prefix = prefix.strip("/")
+        self.path_prefix = "/" + prefix if prefix != "" else prefix
 
     def route(self, method, path, **kwargs):
         def inner(handler):
