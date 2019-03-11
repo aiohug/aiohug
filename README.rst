@@ -49,7 +49,7 @@ Arguments from path and query
    if __name__ == "__main__":
        web.run_app(app)
 
-There is no more ``request`` object in handler only required arguments.
+There is no ``request`` object in handler signature anymore - only required arguments.
    
 
 Body with schema
@@ -94,10 +94,39 @@ Use aiohug_swagger_ package.
 .. _aiohug_swagger: https://github.com/nonamenix/aiohug_swagger
 
 
+Decorators
+----------
+
+Because of the way ``aiohttp`` routing works all decorators to resource handlers
+must be applied **BEFORE** ``aiohug``'s routing decorator, i.e.
+
+.. code:: python
+
+   def some_decorator(func):
+
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
+        # Some logic for decorator
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+    @routes.get("/ping/")
+    @some_decorator
+    async def hello():
+        return "pong"
+
+
+Moreover, make sure to decorate wrapper functions with ``wraps`` decorator from ``functools`` module
+- otherwise ``aiohug`` won't be able to access original handler's arguments and annotations.
+
+
+
 Why aiohug?
 ===========
 
-It's just hug_ API implementation for aiohttp 
+It's just hug_ API implementation for ``aiohttp``
 
 .. _hug: https://github.com/timothycrosley/hug
 
