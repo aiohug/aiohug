@@ -1,7 +1,9 @@
-from inspect import iscoroutine, signature, Parameter, isclass, getfullargspec
+from asyncio import iscoroutine
+from inspect import signature, Parameter, isclass, getfullargspec
 from typing import Optional
-from marshmallow import ValidationError, fields, Schema
+
 from aiohttp import web
+from marshmallow import ValidationError, fields, Schema
 
 from .directives import get_directive
 

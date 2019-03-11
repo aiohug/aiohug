@@ -1,3 +1,7 @@
+# 0.7.1
+
+Support asyncio debug mode (`PYTHONASYNCIODEBUG = 1`)
+
 # 0.7
 
 * Support decorators for handlers
