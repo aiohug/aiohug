@@ -17,6 +17,12 @@ Goals:
 -  Validate handlers arguments
 -  Generate swagger specification
 
+Posts:
+======
+- `Meet the aiohug`_ 
+
+.. _`Meet the aiohug`: https://github.com/nonamenix/notes/blob/master/notes/20190309_aiohug.md
+
 Examples
 ========
 
