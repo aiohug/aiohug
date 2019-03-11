@@ -65,6 +65,13 @@ def cast_arg(arg, kind: Optional = None):
 
 
 async def get_kwargs(request: web.Request, handler):
+    # unwrap all decorators if there are any
+    while True:
+        wrapped = getattr(handler, "__wrapped__", None)
+        if wrapped is None:
+            break
+        handler = wrapped
+
     defaults = get_default_args(handler)
     arg_spec = getfullargspec(handler)
     kwargs = {}
