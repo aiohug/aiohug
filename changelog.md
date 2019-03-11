@@ -1,4 +1,4 @@
-# 0.6.2
+# 0.7
 
 * Support decorators for handlers
 
