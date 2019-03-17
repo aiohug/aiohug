@@ -13,13 +13,13 @@ pip_install:
 	pip install -r requirements-test.txt
 
 ci_test:
-	pytest --flake8 --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
+	pytest --flake8 --cov-report html:.reports/coverage --cov-config .coveragerc --cov $(PROJECT)
 
 test: venv
 	$(VIRTUAL_ENV)/bin/py.test
 
 test_coverage: venv
-	$(VIRTUAL_ENV)/bin/py.test --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
+	$(VIRTUAL_ENV)/bin/py.test --cov-report html:.reports/coverage --cov-config .coveragerc --cov $(PROJECT)
 
 venv_init:
 	pip install virtualenv

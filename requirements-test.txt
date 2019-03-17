@@ -1,6 +1,7 @@
 -r requirements.txt
 
 coverage
+coveralls
 mock
 flake8
 flake8-bugbear
