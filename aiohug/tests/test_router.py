@@ -167,9 +167,39 @@ async def test_variable_not_provided_with_base_types(aiohttp_client):
     app.add_routes(routes)
 
     client = await aiohttp_client(app)
-    resp = await client.get('/')
+    resp = await client.get("/")
     assert resp.status == 409
     assert await resp.json() == {
         "data": {"number": ["Required argument"]},
         "status": "error",
     }
+
+
+async def test_default_router_compatibility(aiohttp_client):
+    app = create_app()
+
+    # aiohug routes
+    aiohug_routes = RouteTableDef()
+
+    @aiohug_routes.get("/aiohug")
+    async def aiohug_ping():
+        return "pong"
+
+    app.add_routes(aiohug_routes)
+
+    # aiohttp routes
+    aiohttp_routes = web.RouteTableDef()
+
+    @aiohttp_routes.get("/aiohttp")
+    async def aiohttp_ping(request):
+        return web.Response(body="pong")
+
+    app.add_routes(aiohttp_routes)
+
+    client = await aiohttp_client(app)
+
+    aiohug_resp = await client.get("/aiohug")
+    assert aiohug_resp.status == 200
+
+    aiohttp_resp = await client.get("/aiohttp")
+    assert aiohttp_resp.status == 200
