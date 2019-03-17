@@ -2,7 +2,7 @@ PROJECT = aiohug
 
 PYTHON_VERSION = 3.6
 REQUIREMENTS = requirements.txt
-REQUIREMENTS_TEST = requirements-test.txt
+REQUIREMENTS_TEST = requirements-dev.txt
 VIRTUAL_ENV := .venv
 PYTHON := $(VIRTUAL_ENV)/bin/python
 PIP_CONF = pip.conf
@@ -10,7 +10,7 @@ PYPI = pypi
 TEST_SETTINGS = settings_test
 
 pip_install:
-	pip install -r requirements-test.txt
+	pip install -r $(REQUIREMENTS_TEST)
 
 ci_test:
 	pytest --flake8 --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
