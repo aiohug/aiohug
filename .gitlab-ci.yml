@@ -19,7 +19,7 @@ tests_python_3.6:
   script:
     - make pip_install
     - make ci_test
-    - coveralls
+    - COVERALLS_FLAG_NAME="python:3.6" COVERALLS_PARALLEL=true coveralls
 
 tests_python_3.7:
   image: python:3.7-stretch
@@ -27,7 +27,7 @@ tests_python_3.7:
   script:
     - make pip_install
     - make ci_test
-    - coveralls
+    - COVERALLS_FLAG_NAME="python:3.7" COVERALLS_PARALLEL=true coveralls
   artifacts:
     paths:
       - .reports
