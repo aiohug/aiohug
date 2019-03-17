@@ -5,8 +5,8 @@ aiohug
 
 .. |pipeline status| image:: https://gitlab.com/nonamenix/aiohug/badges/master/pipeline.svg
    :target: https://gitlab.com/nonamenix/aiohug/commits/master
-.. |coverage report| image:: https://gitlab.com/nonamenix/aiohug/badges/master/coverage.svg
-   :target: https://gitlab.com/nonamenix/aiohug/commits/master
+.. |coverage report| image:: https://coveralls.io/repos/github/nonamenix/aiohug_swagger/badge.svg?branch=HEAD
+   :target: https://coveralls.io/github/nonamenix/aiohug_swagger?branch=HEAD
 .. |version| image:: https://badge.fury.io/py/aiohug.svg
    :target: https://badge.fury.io/py/aiohug
 
