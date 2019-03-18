@@ -17,7 +17,7 @@ ci_test:
 	pytest --flake8 --cov-report html:.reports/coverage --cov-config .coveragerc --cov $(PROJECT)
 
 ci_coveralls:
-	GIT_ID="$(CI_COMMIT_SHORT_SHA)" GIT_MESSAGE="$(CI_COMMIT_MESSAGE)" GIT_BRANCH="$(CI_COMMIT_REF_NAME)" COVERALLS_PARALLEL=true coveralls
+	GIT_ID=$CI_COMMIT_SHORT_SHA GIT_MESSAGE=$CI_COMMIT_MESSAGE GIT_BRANCH=$CI_COMMIT_REF_NAME COVERALLS_PARALLEL=true coveralls
 
 test: venv
 	$(VIRTUAL_ENV)/bin/py.test
