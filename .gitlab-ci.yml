@@ -19,7 +19,7 @@ tests_python_3.6:
   script:
     - make pip_install
     - make ci_test
-    - COVERALLS_FLAG_NAME="python:3.6" COVERALLS_PARALLEL=true coveralls
+    - COVERALLS_FLAG_NAME="python:3.6" make ci_coveralls
 
 tests_python_3.7:
   image: python:3.7-stretch
@@ -27,11 +27,7 @@ tests_python_3.7:
   script:
     - make pip_install
     - make ci_test
-    - COVERALLS_FLAG_NAME="python:3.7" COVERALLS_PARALLEL=true coveralls
-  artifacts:
-    paths:
-      - .reports
-    expire_in: 1 week
+    - COVERALLS_FLAG_NAME="python:3.7" make ci_coveralls
 
 tests_python_3.6_aiohttp_3.1:
   image: python:3.6-stretch
