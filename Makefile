@@ -7,7 +7,6 @@ VIRTUAL_ENV ?= .venv
 PYTHON ?= $(VIRTUAL_ENV)/bin/python
 PIP_CONF = pip.conf
 PYPI = pypi
-TEST_SETTINGS = settings_test
 
 
 pip_install:
