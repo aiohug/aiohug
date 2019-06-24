@@ -3,23 +3,27 @@ PROJECT = aiohug
 PYTHON_VERSION = 3.6
 REQUIREMENTS = requirements.txt
 REQUIREMENTS_TEST = requirements-test.txt
-VIRTUAL_ENV := .venv
-PYTHON := $(VIRTUAL_ENV)/bin/python
+VIRTUAL_ENV ?= .venv
+PYTHON ?= $(VIRTUAL_ENV)/bin/python
 PIP_CONF = pip.conf
 PYPI = pypi
 TEST_SETTINGS = settings_test
+
 
 pip_install:
 	pip install -r requirements-test.txt
 
 ci_test:
-	pytest --flake8 --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
+	pytest --flake8 --cov-report html:.reports/coverage --cov-config .coveragerc --cov $(PROJECT)
+
+ci_coveralls:
+	GIT_ID="$(CI_COMMIT_SHORT_SHA)" GIT_BRANCH="$(CI_COMMIT_REF_NAME)" COVERALLS_PARALLEL=true coveralls
 
 test: venv
 	$(VIRTUAL_ENV)/bin/py.test
 
 test_coverage: venv
-	$(VIRTUAL_ENV)/bin/py.test --cov-report html:.reports/coverage --cov-config .coveragerc --cov-report term:skip-covered --cov $(PROJECT)
+	$(VIRTUAL_ENV)/bin/py.test --cov-report html:.reports/coverage --cov-config .coveragerc --cov $(PROJECT)
 
 venv_init:
 	pip install virtualenv

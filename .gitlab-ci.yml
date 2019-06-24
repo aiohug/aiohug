@@ -1,9 +1,9 @@
 image: python:3.7-stretch
 
 cache:
-    paths:
-      - .venv
-    untracked: true
+  paths:
+    - .venv
+  untracked: true
 
 stages:
   - tests
@@ -13,13 +13,13 @@ variables:
   CACHE_NAME: $CI_PIPELINE_ID
   PACKAGE_NAME: aiohug
 
-
 tests_python_3.6:
   image: python:3.6-stretch
   stage: tests
   script:
     - make pip_install
     - make ci_test
+    - COVERALLS_FLAG_NAME="python:3.6" make ci_coveralls
 
 tests_python_3.7:
   image: python:3.7-stretch
@@ -27,10 +27,7 @@ tests_python_3.7:
   script:
     - make pip_install
     - make ci_test
-  artifacts:
-    paths:
-      - .reports
-    expire_in: 1 week
+    - COVERALLS_FLAG_NAME="python:3.7" make ci_coveralls
 
 tests_python_3.6_aiohttp_3.1:
   image: python:3.6-stretch

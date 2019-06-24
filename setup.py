@@ -53,6 +53,21 @@ setup(
     include_package_data=True,
     packages=find_packages(),
     install_requires=REQUIREMENTS,
+    keywords=[
+        "aiohttp",
+        "aiohttp-server",
+        "aiohttp-swagger",
+        "hug",
+        "api",
+        "api-rest",
+        "rest",
+        "swagger",
+        "schema",
+    ],
+    project_urls={
+        "Changelog": "https://github.com/nonamenix/aiohug/blob/master/changelog.md",
+        "Issues": "https://github.com/nonamenix/aiohug/issues",
+    },
 )
 
 # delete README.txt

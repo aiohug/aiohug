@@ -1,7 +1,9 @@
-from inspect import iscoroutine, signature, Parameter, isclass, getfullargspec
+from asyncio import iscoroutine
+from inspect import signature, Parameter, isclass, getfullargspec
 from typing import Optional
-from marshmallow import ValidationError, fields, Schema
+
 from aiohttp import web
+from marshmallow import ValidationError, fields, Schema
 
 from .directives import get_directive
 
@@ -52,11 +54,11 @@ def cast_arg(arg, kind: Optional = None):
         arg = kind().deserialize(arg)
     # arg: RequestSchema
     elif isclass(kind) and issubclass(kind, Schema):
-        arg = kind(strict=True, many=False).dump(arg).data
+        arg = kind(many=False).dump(arg)  # $strict=True, .marshmallow 3.0 compatibility
     # RequestSchema()
     elif isinstance(kind, Schema):
         kind.strict = True
-        arg = kind.dump(arg).data
+        arg = kind.dump(arg)  # .data marshmallow 3.0 compatibility
     # int, string
     elif callable(kind):
         arg = kind(arg)
@@ -65,6 +67,13 @@ def cast_arg(arg, kind: Optional = None):
 
 
 async def get_kwargs(request: web.Request, handler):
+    # unwrap all decorators if there are any
+    while True:
+        wrapped = getattr(handler, "__wrapped__", None)
+        if wrapped is None:
+            break
+        handler = wrapped
+
     defaults = get_default_args(handler)
     arg_spec = getfullargspec(handler)
     kwargs = {}
