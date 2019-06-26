@@ -1,7 +1,11 @@
 dist: xenial
 language: python
 python:
+  - "3.6"
   - "3.7"
+env: 
+  - aiohttp=3.1
+  - aiohttp=3.4.4
 install:
   - pip install -r requirements-test.txt
   - pip install coveralls
