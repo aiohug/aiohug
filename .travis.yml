@@ -34,6 +34,6 @@ deploy:
     distributions: sdist
     skip_existing: true
     on:
-      condition: "env(IS_DEV_VERSION) = 1"
+      condition: "$IS_DEV_VERSION = 1"
       tags: false
       all_branches: true
