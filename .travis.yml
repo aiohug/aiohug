@@ -3,7 +3,7 @@ language: python
 python:
   - "3.6"
   - "3.7"
-env: 
+env:
   - aiohttp=3.1
   - aiohttp=3.4.4
 install:
@@ -13,11 +13,21 @@ script:
   - make ci_test
 after_success: coveralls
 deploy:
-  provider: pypi
-  user: nonamenix
-  skip_existing: true
-  password:
-    secure: BY9cVA64zykJFg+tWlpeCGvucYdG1jf76tuMGkLLxUadF2qbdpmZ4WYD0e5p6PqT0CNIz3k0xZtB4LYbDSsDaZfBUtDUO5upMnUG66XSB8gWm+Rf2DRI3yOSvWuAT07Eqsw6KhpA+DDmokJ2lV2vmDlfTxkHhK3IkdRhDGtTTJaCWlrTfWArH9FeXqzyOIeQxgdfTaXhFaPJlLfaQgZp9Dqe42FwOtNSg4cH29bwKrWgHA9M3+pcIABm4i2B40ZHWoKNhZUv9IFxWK9qaMQRHQ8vrY1xVqy1Plenph/a5U0Gro6yWQXguuzT59goycndU6J7+hlwuxD0FXBolhIlg9eXhSi729agdQLYAuv87p/LYR3FGa7af64g4ucN3ZdhdjfrgWtt5ExCSnuG73MHQUh+wejygvIuKnqw53q26pMLPAbi343I1/+pPHzqYwYYW2OUtw8bJrm+s+Gd7fZ+0KDvc5MaOHeZWQEK1BEuqHE/rjyyZi/GbDp2nrPQWUq7QkrwO3lwXH4T6lNruOlebvAZeznV07DfXdx5aDybty3k2LYNwUu/HBOjc+OuW2LYROlfS2Y78pfXhIFqBNlgy+cCPQv06VpVUdK8DXAXca/t9BIhmYAgpmJORFeaTTp/ZI0ZwizMvT6qrLmV/816u403xsADDUge8/O4WQ2H3EY=
-  distributions: sdist bdist_wheel
-  on:
-    tags: true
+  - provider: pypi
+    user: nonamenix
+    password:
+      secure: BY9cVA64zykJFg+tWlpeCGvucYdG1jf76tuMGkLLxUadF2qbdpmZ4WYD0e5p6PqT0CNIz3k0xZtB4LYbDSsDaZfBUtDUO5upMnUG66XSB8gWm+Rf2DRI3yOSvWuAT07Eqsw6KhpA+DDmokJ2lV2vmDlfTxkHhK3IkdRhDGtTTJaCWlrTfWArH9FeXqzyOIeQxgdfTaXhFaPJlLfaQgZp9Dqe42FwOtNSg4cH29bwKrWgHA9M3+pcIABm4i2B40ZHWoKNhZUv9IFxWK9qaMQRHQ8vrY1xVqy1Plenph/a5U0Gro6yWQXguuzT59goycndU6J7+hlwuxD0FXBolhIlg9eXhSi729agdQLYAuv87p/LYR3FGa7af64g4ucN3ZdhdjfrgWtt5ExCSnuG73MHQUh+wejygvIuKnqw53q26pMLPAbi343I1/+pPHzqYwYYW2OUtw8bJrm+s+Gd7fZ+0KDvc5MaOHeZWQEK1BEuqHE/rjyyZi/GbDp2nrPQWUq7QkrwO3lwXH4T6lNruOlebvAZeznV07DfXdx5aDybty3k2LYNwUu/HBOjc+OuW2LYROlfS2Y78pfXhIFqBNlgy+cCPQv06VpVUdK8DXAXca/t9BIhmYAgpmJORFeaTTp/ZI0ZwizMvT6qrLmV/816u403xsADDUge8/O4WQ2H3EY=
+    distributions: sdist bdist_wheel
+    skip_existing: true
+    on:
+      tags: true
+
+  - provider: script
+    user: nonamenix
+    password:
+      secure: BY9cVA64zykJFg+tWlpeCGvucYdG1jf76tuMGkLLxUadF2qbdpmZ4WYD0e5p6PqT0CNIz3k0xZtB4LYbDSsDaZfBUtDUO5upMnUG66XSB8gWm+Rf2DRI3yOSvWuAT07Eqsw6KhpA+DDmokJ2lV2vmDlfTxkHhK3IkdRhDGtTTJaCWlrTfWArH9FeXqzyOIeQxgdfTaXhFaPJlLfaQgZp9Dqe42FwOtNSg4cH29bwKrWgHA9M3+pcIABm4i2B40ZHWoKNhZUv9IFxWK9qaMQRHQ8vrY1xVqy1Plenph/a5U0Gro6yWQXguuzT59goycndU6J7+hlwuxD0FXBolhIlg9eXhSi729agdQLYAuv87p/LYR3FGa7af64g4ucN3ZdhdjfrgWtt5ExCSnuG73MHQUh+wejygvIuKnqw53q26pMLPAbi343I1/+pPHzqYwYYW2OUtw8bJrm+s+Gd7fZ+0KDvc5MaOHeZWQEK1BEuqHE/rjyyZi/GbDp2nrPQWUq7QkrwO3lwXH4T6lNruOlebvAZeznV07DfXdx5aDybty3k2LYNwUu/HBOjc+OuW2LYROlfS2Y78pfXhIFqBNlgy+cCPQv06VpVUdK8DXAXca/t9BIhmYAgpmJORFeaTTp/ZI0ZwizMvT6qrLmV/816u403xsADDUge8/O4WQ2H3EY=
+    script: env DEV_VERSION=$TRAVIS_BUILD_ID make pkg_upload
+    skip_existing: true
+    on:
+      tags: false
+      all_branches: true
