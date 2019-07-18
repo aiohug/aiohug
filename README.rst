@@ -33,6 +33,7 @@ Arguments from path and query
 
    from aiohttp import web
    from aiohug import RouteTableDef
+   from marshmallow import fields
 
    routes = RouteTableDef()
 
