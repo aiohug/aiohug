@@ -1,6 +1,10 @@
+# 0.7.2
+
+* Fix schema validation for Marshmallow 3
+
 # 0.7.1
 
-Support asyncio debug mode (`PYTHONASYNCIODEBUG = 1`)
+* Support asyncio debug mode (`PYTHONASYNCIODEBUG = 1`)
 
 # 0.7
 

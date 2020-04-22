@@ -1,6 +1,6 @@
 import pytest
 from aiohttp import web
-from marshmallow import fields, Schema
+from marshmallow import fields, Schema, validate
 
 from aiohug import RouteTableDef
 
@@ -36,11 +36,16 @@ class RequestSchemaWithRequiredFields(Schema):
     b = fields.Int(required=True)
 
 
+class RequestSchemaWithFieldsValidation(Schema):
+    a = fields.String(validate=validate.Length(min=50))
+
+
 @pytest.mark.parametrize(
     "schema_class,json_data,excepted_error",
     [
         (RequestSchema, {"a": "5", "b": "c"}, {"b": ["Not a valid integer."]}),
         (RequestSchemaWithRequiredFields, {"a": "4"}, {"b": ["Missing data for required field."]}),
+        (RequestSchemaWithFieldsValidation, {"a": "Too short string"}, {'a': ['Shorter than minimum length 50.']}),
     ],
 )
 async def test_not_valid_schema(schema_class, json_data, excepted_error, aiohttp_client):
